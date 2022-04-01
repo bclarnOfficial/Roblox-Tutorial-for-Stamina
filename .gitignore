@@ -1,41 +1,26 @@
-# Compiled Lua sources
-luac.out
+local player = game.Players.LocalPlayer
+local character = player.Character
 
-# luarocks build files
-*.src.rock
-*.zip
-*.tar.gz
+local UserInputService = game:GetService('UserInputService')
 
-# Object files
-*.o
-*.os
-*.ko
-*.obj
-*.elf
+local stamina = 100
+local running = false
 
-# Precompiled Headers
-*.gch
-*.pch
+stamina = math.clamp(stamina, 0, 100)
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-*.def
-*.exp
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.LeftShift then
+        running = true
+        character.Humanoid.WalkSpeed = 20
+        while stamina > 0 and running do
+            stamina = stamina - 0.10
+            script.Parent:TweenSize(UDim2.new(stamina/100, 0, 1, 0), 'Out', 'Linear', 0)
+            wait()
+            if stamina == 0 then
+                character.Humanoid.WalkSpeed = 16
+            end
+        end
+    end
+end)
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
 
